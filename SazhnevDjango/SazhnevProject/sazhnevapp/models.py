@@ -8,6 +8,7 @@ class Client(models.Model):
     phone = models.IntegerField()
     address = models.CharField(max_length=200)
     registration_date = models.DateField(auto_now_add=True)
+    products = models.ManyToManyField('Product', related_name='clients')
 
     def __str__(self):
         return self.name
@@ -21,7 +22,7 @@ class Product(models.Model):
     added_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return "{} - {} - {}".format(self.name, self.description, self.quantity)
+        return f"{self.name}, {self.description}, {self.quantity}"
 
 
 class Order(models.Model):
