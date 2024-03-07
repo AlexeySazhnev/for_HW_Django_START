@@ -19,6 +19,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.IntegerField()
+    image = models.ImageField(upload_to='product_images/', null=True, blank=True)
     added_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -27,7 +28,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product)
+    products = models.ManyToManyField(Product, blank=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     order_date = models.DateField(auto_now_add=True)
 

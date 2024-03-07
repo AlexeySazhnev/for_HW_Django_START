@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import Product, Client, Order
+from .forms import ProductForm
 import pandas as pd
 import logging
 
@@ -27,7 +27,9 @@ def get_html_table(data):
              "Описание": el.description,
              "Количество": el.quantity,
              "Цена": el.price,
-             "Дата завоза": el.added_date}
+             "Дата завоза": el.added_date,
+             "Фото продукта": el.image,
+             }
         )
     return pd.DataFrame(table).to_html(index=False)
 
@@ -66,12 +68,24 @@ def get_orders(request, client_id):
                                          order_date__gte=datetime.now() - timedelta(days=7)).order_by('order_date')
     """Заказы за месяц"""
     monthly_orders = Order.objects.filter(client=client,
-                                         order_date__gte=datetime.now() - timedelta(days=30)).order_by('order_date')
+                                          order_date__gte=datetime.now() - timedelta(days=30)).order_by('order_date')
     """Заказы за год"""
     orders_per_year = Order.objects.filter(client=client,
-                                          order_date__gte=datetime.now() - timedelta(days=365)).order_by('order_date')
+                                           order_date__gte=datetime.now() - timedelta(days=365)).order_by('order_date')
     return render(request, "sazhnevapp/orders.html", {'client': client,
                                                       'weekly_orders': weekly_orders,
                                                       'monthly_orders': monthly_orders,
                                                       'orders_per_year': orders_per_year}
                   )
+
+
+def edit_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('main')
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'sazhnevapp/edit_product.html', {'form': form})
