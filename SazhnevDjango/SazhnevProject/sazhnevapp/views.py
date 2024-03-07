@@ -59,10 +59,6 @@ def get_catalog(request):
     return render(request, 'sazhnevapp/catalog.html', {'table': result})
 
 
-from datetime import datetime, timedelta
-from django.db.models import Count
-
-
 def get_orders(request, client_id):
     client = get_object_or_404(Client, pk=client_id)
     """Заказы за неделю"""
