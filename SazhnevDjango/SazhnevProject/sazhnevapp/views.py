@@ -28,7 +28,7 @@ def get_html_table(data):
              "Количество": el.quantity,
              "Цена": el.price,
              "Дата завоза": el.added_date,
-             "Фото продукта": el.image,
+             # "Фото продукта": el.image,
              }
         )
     return pd.DataFrame(table).to_html(index=False)

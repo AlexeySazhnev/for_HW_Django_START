@@ -38,6 +38,7 @@ class AdminClient(admin.ModelAdmin):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields['phone'].widget.attrs['style'] = 'width: 30%;'  # Установка ширины поля "phone"
         return form
+
 @admin.register(Product)
 class AdminProduct(admin.ModelAdmin):
     list_display = ['id', 'name', 'price', 'quantity','added_date']
