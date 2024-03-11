@@ -33,7 +33,7 @@ else:
 ALLOWED_HOSTS = [
     '127.0.0.1',
     '192.168.0.11',
-    'vegetableshop.pythonanywhere.com',
+    'sazhnevshop.pythonanywhere.com',
 ]
 
 # Application definition
